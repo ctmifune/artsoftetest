@@ -16,7 +16,7 @@ chmod 400 $(pwd)/mongodbRSet/mongodb-keyfile/mongo.key
 chown  999:999 $(pwd)/mongodbRSet/mongodb-keyfile/mongo.key
 
 #Create database users for rocket chat connect
-echo "Createing database users"
+echo "Creating database users"
 docker run --name mongodb1 \
 -v $(pwd)/mongodbRSet/mongodb-keyfile/:/opt/keyfile \
 -v mongodb1:/data/db \
