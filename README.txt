@@ -9,4 +9,9 @@ docker network create --driver=bridge --subnet=10.10.0.0/16 --ip-range=10.10.1.1
 3. Change ROOT_URL in 3 instance of Rocketchat in ./rocketchat/docker-compose.yml:
 - ROOT_URL=http://<your FQDN>
 
-4. Run ./setup.sh
+4. Change "server_name" in ./web/nginx/rocket.conf: 
+
+server_name  example.ru www.example.com;
+
+5. Run ./setup.sh:
+sudo ./setup.sh 
