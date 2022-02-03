@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  nginx:
+    image: nginx:mainline-alpine
+    restart: unless-stopped
+    ports:
+      - 80:80
+    container_name: nginx
+    volumes:
+      - ./nginx/:/etc/nginx/conf.d/
+  
+networks:
+  default:
+    external: true
+    name: rocketnet

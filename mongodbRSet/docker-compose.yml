@@ -1,0 +1,52 @@
+version: "3.8"
+services:
+  mongodb1:
+    image:  mongo:4.4
+    restart: unless-stopped
+    container_name: mongodb1
+    volumes:
+      - ./mongodb-keyfile/:/opt/keyfile/
+      - mongodb1:/data/db
+    command: ["--replSet", "rs0", "--oplogSize", "128", "--keyFile", "/opt/keyfile/mongo.key"]
+    
+    
+  mongodb2:
+    image:  mongo:4.4
+    restart: unless-stopped
+    container_name: mongodb2
+    volumes:
+      - ./mongodb-keyfile/:/opt/keyfile
+      - mongodb2:/data/db
+    command: ["--replSet", "rs0", "--oplogSize", "128", "--keyFile", "/opt/keyfile/mongo.key"]
+    
+
+  mongodb3:
+    image:  mongo:4.4
+    restart: unless-stopped
+    container_name: mongodb3
+    volumes:
+      - ./mongodb-keyfile/:/opt/keyfile
+      - mongodb3:/data/db
+    command: ["--replSet", "rs0", "--oplogSize", "128", "--keyFile", "/opt/keyfile/mongo.key"]
+  mongosetup:
+    image: mongo:4.4
+    depends_on:
+      - mongodb1
+      - mongodb2
+      - mongodb3
+    volumes:
+      - ./mongoinit/:/scripts
+    restart: "no"
+    entrypoint: [ "bash", "/scripts/mongo_init.sh"]
+
+volumes:
+  mongodb1:
+    external: true
+  mongodb2:
+    external: true
+  mongodb3:
+    external: true
+networks:
+  default:
+    external: true
+    name: rocketnet

@@ -1,0 +1,44 @@
+version: "3.8"
+services:
+  rocketchat1:
+    image:  rocket.chat:4.3.2
+    restart: unless-stopped
+    container_name: rocketchat1
+    environment:
+      - ROOT_URL=http://rockethome.minzero.ru
+      - MONGO_URL=mongodb://rocket:roPass22@mongodb1:27017,mongodb2:27017,mongodb3:27017/rocketchat?authSource=admin&replicaSet=rs0&w=majority
+      - MONGO_OPLOG_URL=mongodb://oploguser:opPass22@mongodb1:27017,mongodb2:27017,mongodb3:27017/local?authSource=admin&replicaSet=rs0
+
+  rocketchat2:
+    image:  rocket.chat:4.3.2
+    restart: unless-stopped
+    container_name: rocketchat2
+    environment:
+      - ROOT_URL=http://rockethome.minzero.ru
+      - MONGO_URL=mongodb://rocket:roPass22@mongodb1:27017,mongodb2:27017,mongodb3:27017/rocketchat?authSource=admin&replicaSet=rs0&w=majority
+      - MONGO_OPLOG_URL=mongodb://oploguser:opPass22@mongodb1:27017,mongodb2:27017,mongodb3:27017/local?authSource=admin&replicaSet=rs0
+    depends_on:
+      - rocketchat1
+
+  rocketchat3:
+    image:  rocket.chat:4.3.2
+    restart: unless-stopped
+    container_name: rocketchat3
+    environment:
+      - ROOT_URL=http://rockethome.minzero.ru
+      - MONGO_URL=mongodb://rocket:roPass22@mongodb1:27017,mongodb2:27017,mongodb3:27017/rocketchat?authSource=admin&replicaSet=rs0&w=majority
+      - MONGO_OPLOG_URL=mongodb://oploguser:opPass22@mongodb1:27017,mongodb2:27017,mongodb3:27017/local?authSource=admin&replicaSet=rs0
+    depends_on:
+      - rocketchat2
+
+volumes:
+  mongodb1:
+    external: true
+  mongodb2:
+    external: true
+  mongodb3:
+    external: true
+networks:
+  default:
+    external: true
+    name: rocketnet
